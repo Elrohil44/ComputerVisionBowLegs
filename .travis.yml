@@ -1,0 +1,14 @@
+language: python
+python: "3.7"
+services:
+  - docker
+install:
+  - bash ./download_model.sh
+jobs:
+  include:
+    - stage: deploy
+      script: bash ./build.sh && bash ./deploy.sh
+
+stages:
+  - name: deploy
+    if: branch = master

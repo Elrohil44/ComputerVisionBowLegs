@@ -1,4 +1,6 @@
 venv
 .idea
+models/*
+model.tar.gz
 
 **/__pycache__
