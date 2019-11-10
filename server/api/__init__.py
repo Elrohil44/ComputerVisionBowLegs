@@ -15,7 +15,7 @@ MODEL_PATH = os.environ['MODEL_PATH'] if \
     'models/model.h5'
 
 
-session = tf.compat.v1.Session(graph=tf.Graph())
+session = tf.Session(graph=tf.Graph())
 with session.graph.as_default():
     keras.backend.set_session(session)
     UNet = load_model(MODEL_PATH, custom_objects={'bce_dice_loss': bce_dice_loss, 'dice_coeff': dice_coeff})
