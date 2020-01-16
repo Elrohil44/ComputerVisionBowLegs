@@ -1,0 +1,11 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "https://github.com/Elrohil44/ComputerVisionBowLegs",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-rdkafka": "^2.7.4"
+  }
+}
