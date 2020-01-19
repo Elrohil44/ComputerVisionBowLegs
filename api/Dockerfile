@@ -14,9 +14,10 @@ RUN apk --no-cache add \
 RUN apk add --no-cache --virtual .build-deps gcc zlib-dev libc-dev bsd-compat-headers py-setuptools bash
 
 WORKDIR /app
-COPY ./* ./
+COPY ./package.json ./yarn.lock ./
 
 RUN yarn install --pure-lockfile
+COPY ./ ./
 
 CMD yarn start
 EXPOSE 5000

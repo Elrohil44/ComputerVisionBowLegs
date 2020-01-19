@@ -1,7 +1,11 @@
 import os
+import time
+import random
 from confluent_kafka import Consumer
 
 KAFKA_BROKER = os.environ.get('KAFKA_BROKER')
+GROUP = 'bow-legs-worker-group'
+TOPIC = 'bow-legs-jobs'
 
 assert KAFKA_BROKER, 'Missing Kafka broker URL'
 
@@ -10,25 +14,22 @@ def handle_image(id):
 
 
 if __name__ == '__main__':
-    print('aaaaa')
     c = Consumer({
         'bootstrap.servers': KAFKA_BROKER,
-        'group.id': 'worker_group',
+        'group.id': GROUP,
         'auto.offset.reset': 'earliest',
-        'error_cb': lambda x: print('ERROR', x)
-        # 'enable.auto.commit': False
+        'enable.auto.commit': False
     })
 
-    c.subscribe(['jobs'])
+    c.subscribe([TOPIC])
 
     while True:
-        msg = c.poll(10.0)
-        print('Timeout' if msg is None else 'Received message')
+        msg = c.poll(1.)
         if msg is None:
             continue
         if msg.error():
             print("Consumer error: {}".format(msg.error()))
             continue
         print(msg.value())
-
-print('aaaaaaaaaaa')
+        time.sleep(random.random() * 1.)
+        c.commit(msg)

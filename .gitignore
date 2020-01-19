@@ -5,3 +5,5 @@ model.tar.gz
 
 **/__pycache__
 **/node_modules
+db/data
+**/yarn-error.log
