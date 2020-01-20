@@ -1,7 +1,7 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const connectToDatabase = require('./db');
-const Prediction = require('./models/Prediction');
-const { publishMessage } = require('./kafka');
+const routes = require('./routes');
 
 connectToDatabase()
   .then(() => console.log('Successfully connected to database'))
@@ -10,16 +10,11 @@ connectToDatabase()
 const app = express();
 const port = 5000;
 
-const asyncWrapper = (func) => (req, res, next) => Promise.resolve()
-  .then(() => func(req, res, next))
-  .catch(next);
+app.use(bodyParser.json());
+app.use('/', routes);
 
-app.get('/', asyncWrapper((req, res, next) => {
-  publishMessage(Buffer.from(new Array(30).fill().map(() => Math.floor(255 * Math.random()))).toString('hex'));
-  new Prediction({ path: 'asdasdas' }).save().then((result) => res.send(result)).catch(next);
-}));
-
-app.use((err, req, res) => {
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send('Something broke!');
 });

@@ -5,10 +5,12 @@ const schema = new mongoose.Schema({
     type: String,
     enum: ['QUEUED', 'IN_PROGRESS', 'COMPLETED'],
   },
-  path: {
+  sourcePath: {
     type: String,
     required: true,
   },
+  maskPath: String,
+  predictionPath: String,
   inProgressSince: Date,
 }, {
   timestamps: true,

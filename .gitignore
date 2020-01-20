@@ -1,9 +1,11 @@
 venv
 .idea
-models/*
+consumer/models
 model.tar.gz
 
 **/__pycache__
 **/node_modules
 db/data
 **/yarn-error.log
+
+static/**/*.jpeg

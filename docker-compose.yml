@@ -61,7 +61,7 @@ services:
     build: ./consumer
     environment:
       KAFKA_BROKER: kafka:9092
-      API_URL: nginx:80/api
+      API_URL: http://nginx/api
       API_TOKEN: Htrf5MTPBtpR9jRqHvfMhzqHV01j9v
     depends_on:
       - kafka
@@ -69,6 +69,8 @@ services:
     networks:
       - backend
     restart: unless-stopped
+    volumes:
+      - ./static:/var/content/static
   nginx:
     image: nginx:alpine
     volumes:
