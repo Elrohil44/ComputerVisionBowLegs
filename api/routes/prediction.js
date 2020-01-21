@@ -43,7 +43,7 @@ router.post(
       sourcePath: prediction.sourcePath,
     }));
 
-    res.send(prediction);
+    res.status(201).send(prediction);
   }),
 );
 
