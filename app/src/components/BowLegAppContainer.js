@@ -1,33 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import AddIcon from '@material-ui/icons/Add';
-import ResultPanel from './ResultPanel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
-import {prediction, predictions} from "../api";
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import ResultPanel from './ResultPanel';
+import { prediction, predictions } from '../api';
 
 
 const FETCH_INTERVAL = 1000 * 10;
-
 const images = [
+  /* eslint global-require:0 */
   require('../images/default.png'),
   require('../images/upside_down.png'),
   require('../images/low_quality.png'),
 ];
 
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
   image: {
     height: 'auto',
     width: 180,
+  },
+  defaultImages: {
+    marginBottom: 50,
+  },
+  uploadImage: {
+    height: 300,
+    marginTop: 10,
   },
   control: {
     padding: theme.spacing(2),
@@ -47,7 +55,10 @@ const useStyles = makeStyles(theme => ({
     width: 100,
   },
   uploadContainer: {
-    height: 100,
+    height: 430,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   uploadName: {
     marginTop: 10,
@@ -63,7 +74,10 @@ const DefaultOption = ({ isClicked, onClick, imgSource }) => {
   const classes = useStyles();
 
   return (
-    <Grid item className={classes.option}>
+    <Grid
+      item
+      className={classes.option}
+    >
       <img
         onClick={onClick}
         src={imgSource}
@@ -73,13 +87,13 @@ const DefaultOption = ({ isClicked, onClick, imgSource }) => {
         checked={isClicked}
         onChange={onClick}
         value="primary"
-        inputProps={{'aria-label': 'primary checkbox'}}
+        inputProps={{ 'aria-label': 'primary checkbox' }}
       />
     </Grid>
   );
 };
 
-const UploadButton = ({ onImagePick, pickedName }) => {
+const UploadButton = ({ onImagePick, imageToUpload }) => {
   const classes = useStyles();
 
   return (
@@ -93,18 +107,28 @@ const UploadButton = ({ onImagePick, pickedName }) => {
         onChange={onImagePick}
       />
       <label htmlFor="contained-button-file">
-        <Button variant="contained" color="primary" component="span">
+        <Button
+          variant="contained"
+          color="primary"
+          component="span"
+        >
           <AddIcon />
         </Button>
       </label>
-      {pickedName ? (
+      { imageToUpload ? (
+        <img
+          src={URL.createObjectURL(imageToUpload)}
+          className={classes.uploadImage}
+        />
+      ) : null }
+      { imageToUpload ? (
         <Typography
           variant="subtitle2"
           className={classes.uploadName}
         >
-          {pickedName}
+          { imageToUpload.name }
         </Typography>
-      ) : null}
+      ) : null }
     </div>
   );
 };
@@ -128,13 +152,13 @@ const BowLegAppContainer = () => {
     if (lastFetched + FETCH_INTERVAL < Date.now()) {
       predictions.fetchPredictions()
         .then((newPredictionsList) => {
-          const ids = uploadedTasks.map(task => task._id);
-          setUploadedTasks(newPredictionsList.filter(pred => ids.includes(pred._id)));
+          const ids = uploadedTasks.map((task) => task._id);
+          setUploadedTasks(newPredictionsList.filter((pred) => ids.includes(pred._id)));
           setLastFetched(Date.now());
         })
-        .catch((error) => console.error('Could not fetch predictions', error));
+        .catch(() => null);
     }
-  }, [lastFetched]);
+  }, [lastFetched, uploadedTasks]);
 
   const uploadImage = (event) => {
     const file = event.target.files.item(0);
@@ -146,7 +170,12 @@ const BowLegAppContainer = () => {
   };
 
   const submitTask = async () => {
-    if (imageToUpload) {
+    if (defaultImageIndex >= 0 && defaultImageIndex <= 3) {
+      fetch(images[defaultImageIndex])
+        .then((res) => res.blob())
+        .then((blob) => prediction.createPrediction(new File([blob], 'default', { type: 'image/png' })))
+        .then((createdPrediction) => setUploadedTasks([...uploadedTasks, createdPrediction]));
+    } else if (imageToUpload) {
       const createdPrediction = await prediction.createPrediction(imageToUpload);
       setUploadedTasks([...uploadedTasks, createdPrediction]);
       setImageToUpload(null);
@@ -154,20 +183,32 @@ const BowLegAppContainer = () => {
   };
 
   return (
-    <Container maxWidth="md" className="App">
+    <Container
+      maxWidth="md"
+      className="App"
+    >
       <Typography
         variant="h2"
         className={classes.title}
       >
-        Choose image
+        { 'Choose image' }
       </Typography>
-      <Grid item xs={12}>
-        <Grid container justify="center" spacing={3}>
+      <Grid
+        item
+        xs={12}
+        className={classes.defaultImages}
+      >
+        <Grid
+          container
+          justify="center"
+          spacing={3}
+        >
           {
             images.map((image, index) => (
               <DefaultOption
+                key={index}
                 isClicked={defaultImageIndex === index}
-                onClick={() => setDefaultImageIndex(index)}
+                onClick={() => setDefaultImageIndex(defaultImageIndex === index ? null : index)}
                 imgSource={image}
               />
             ))
@@ -179,18 +220,18 @@ const BowLegAppContainer = () => {
         variant="h4"
         className={classes.title}
       >
-        or upload yours
+        { 'or upload yours' }
       </Typography>
       <UploadButton
         onImagePick={uploadImage}
-        pickedName={imageToUpload && imageToUpload.name}
+        imageToUpload={imageToUpload}
       />
       <Divider />
       <Typography
         variant="h2"
         className={classes.title}
       >
-        Submit task
+        { 'Submit task' }
       </Typography>
       <Button
         variant="contained"
@@ -199,19 +240,37 @@ const BowLegAppContainer = () => {
         startIcon={<CloudUploadIcon />}
         onClick={submitTask}
       >
-        Submit
+        { 'Submit' }
       </Button>
       <Typography
         variant="h4"
         className={classes.title}
       >
-        and wait for results
+        { 'and wait for results' }
       </Typography>
       <div>
-        {uploadedTasks.map(task => <ResultPanel predictionTask={task} />)}
+        {
+          uploadedTasks.map((task, idx) => (
+            <ResultPanel
+              key={idx}
+              predictionTask={task}
+            />
+          ))
+        }
       </div>
     </Container>
   );
+};
+
+UploadButton.propTypes = {
+  onImagePick: PropTypes.func.isRequired,
+  imageToUpload: PropTypes.object,
+};
+
+DefaultOption.propTypes = {
+  isClicked: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+  imgSource: PropTypes.string.isRequired,
 };
 
 export default BowLegAppContainer;

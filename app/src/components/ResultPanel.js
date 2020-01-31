@@ -6,12 +6,14 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FadeLoader from 'react-spinners/FadeLoader';
-import Chip from "@material-ui/core/Chip";
-import Grid from "@material-ui/core/Grid";
+import Chip from '@material-ui/core/Chip';
+import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
+
 
 const STATIC_RESOURCES_ROOT_URL = 'http://10.1.1.44/static';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     marginBottom: 5,
@@ -34,57 +36,88 @@ const useStyles = makeStyles(theme => ({
     width: 110,
     display: 'flex',
     justifyContent: 'center',
-  }
+  },
 }));
 
 const ResultPanel = ({ predictionTask }) => {
   const classes = useStyles();
 
   return (
-    <ExpansionPanel  className={classes.root}>
+    <ExpansionPanel className={classes.root}>
       <ExpansionPanelSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
         <div className={classes.status}>
-          {predictionTask.status !== 'QUEUED' && predictionTask.status !== 'IN_PROGRESS' ?
-            <Chip color="primary" size="medium" label={predictionTask.status} /> : null}
+          { predictionTask.status !== 'QUEUED' && predictionTask.status !== 'IN_PROGRESS'
+            ? (
+              <Chip
+                color="primary"
+                size="medium"
+                label={predictionTask.status}
+              />
+            ) : null }
           <FadeLoader
             size={10}
             color="#3f51b5"
             loading={predictionTask.status === 'QUEUED' || predictionTask.status === 'IN_PROGRESS'}
           />
         </div>
-        <Typography className={classes.heading} variant="h6">{`ID: ${predictionTask._id}`}</Typography>
+        <Typography
+          className={classes.heading}
+          variant="h6"
+        >{ `ID: ${predictionTask._id}` }
+        </Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
-        <Grid container justify="center" spacing={3}>
-          <Grid item className={classes.option}>
+        <Grid
+          container
+          justify="center"
+          spacing={3}
+        >
+          <Grid
+            item
+            className={classes.option}
+          >
             <img
               src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.sourcePath}`}
               className={classes.image}
             />
-            <Typography variant="h6">Source</Typography>
+            <Typography variant="h6">{ 'Source' }</Typography>
           </Grid>
-          {predictionTask.maskPath && <Grid item className={classes.option}>
-            <img
-              src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.maskPath}`}
-              className={classes.image}
-            />
-            <Typography  variant="h6">Mask</Typography>
-          </Grid>}
-          {predictionTask.predictionPath && <Grid item className={classes.option}>
-            <img
-              src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.predictionPath}`}
-              className={classes.image}
-            />
-            <Typography variant="h6">Prediction</Typography>
-          </Grid>}
+          { predictionTask.maskPath && (
+            <Grid
+              item
+              className={classes.option}
+            >
+              <img
+                src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.maskPath}`}
+                className={classes.image}
+              />
+              <Typography variant="h6">{ 'Mask' }</Typography>
+            </Grid>
+          ) }
+          { predictionTask.predictionPath && (
+            <Grid
+              item
+              className={classes.option}
+            >
+              <img
+                src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.predictionPath}`}
+                className={classes.image}
+              />
+              <Typography variant="h6">{ 'Prediction' }</Typography>
+            </Grid>
+          ) }
         </Grid>
       </ExpansionPanelDetails>
     </ExpansionPanel>
-  )
+  );
+};
+
+ResultPanel.propTypes = {
+  predictionTask: PropTypes.object.isRequired,
 };
 
 export default ResultPanel;
