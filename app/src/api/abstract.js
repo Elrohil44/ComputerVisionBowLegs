@@ -1,4 +1,4 @@
-const apiUrl = 'http://10.1.1.44/api';
+const apiUrl = process.env.REACT_APP_API_URL || 'http://10.1.1.44/api';
 
 const fetchJson = async (method, endpoint, expectedResponse, body, headers) => {
   const requestHeaders = {
