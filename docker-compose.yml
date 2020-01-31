@@ -90,6 +90,7 @@ services:
      context: ./app
      args:
        REACT_APP_API_URL: http://10.1.1.44/api
+       REACT_APP_STATIC_RESOURCES_ROOT_URL: http://10.1.1.44/static
     volumes:
       - ./app/build:/app/build
     networks:

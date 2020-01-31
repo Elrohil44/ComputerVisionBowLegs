@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const STATIC_RESOURCES_ROOT_URL = 'http://10.1.1.44/static';
+const REACT_APP_STATIC_RESOURCES_ROOT_URL = process.env.REACT_APP_STATIC_RESOURCES_ROOT_URL
+  || 'http://10.1.1.44/static';
 
 const Prediction = ({
   _id,
@@ -18,7 +19,7 @@ const Prediction = ({
     <td>{ status }</td>
     <td><img
       alt="Source"
-      src={`${STATIC_RESOURCES_ROOT_URL}/${sourcePath}`}
+      src={`${REACT_APP_STATIC_RESOURCES_ROOT_URL}/${sourcePath}`}
     />
     </td>
     <td>
@@ -27,7 +28,7 @@ const Prediction = ({
           ? (
             <img
               alt="Mask"
-              src={`${STATIC_RESOURCES_ROOT_URL}/${maskPath}`}
+              src={`${REACT_APP_STATIC_RESOURCES_ROOT_URL}/${maskPath}`}
             />
           )
 
@@ -39,7 +40,7 @@ const Prediction = ({
         ? (
           <img
             alt="Prediction"
-            src={`${STATIC_RESOURCES_ROOT_URL}/${predictionPath}`}
+            src={`${REACT_APP_STATIC_RESOURCES_ROOT_URL}/${predictionPath}`}
           />
         )
         : 'n/a' }
