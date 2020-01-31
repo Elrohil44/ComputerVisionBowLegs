@@ -9,7 +9,8 @@ import FadeLoader from 'react-spinners/FadeLoader';
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
 
-const STATIC_RESOURCES_ROOT_URL = 'http://10.1.1.44/static';
+const REACT_APP_STATIC_RESOURCES_ROOT_URL = process.env.REACT_APP_STATIC_RESOURCES_ROOT_URL
+  || 'http://10.1.1.44/static';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -62,21 +63,21 @@ const ResultPanel = ({ predictionTask }) => {
         <Grid container justify="center" spacing={3}>
           <Grid item className={classes.option}>
             <img
-              src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.sourcePath}`}
+              src={`${REACT_APP_STATIC_RESOURCES_ROOT_URL}/${predictionTask.sourcePath}`}
               className={classes.image}
             />
             <Typography variant="h6">Source</Typography>
           </Grid>
           {predictionTask.maskPath && <Grid item className={classes.option}>
             <img
-              src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.maskPath}`}
+              src={`${REACT_APP_STATIC_RESOURCES_ROOT_URL}/${predictionTask.maskPath}`}
               className={classes.image}
             />
             <Typography  variant="h6">Mask</Typography>
           </Grid>}
           {predictionTask.predictionPath && <Grid item className={classes.option}>
             <img
-              src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.predictionPath}`}
+              src={`${REACT_APP_STATIC_RESOURCES_ROOT_URL}/${predictionTask.predictionPath}`}
               className={classes.image}
             />
             <Typography variant="h6">Prediction</Typography>
