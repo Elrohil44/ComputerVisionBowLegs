@@ -57,7 +57,7 @@ services:
       - db
     restart: unless-stopped
   consumer:
-    build: elrohil/bow-legs-consumer:latest
+    image: elrohil/bow-legs-consumer:latest
     environment:
       KAFKA_BROKER: kafka:9092
       API_URL: http://nginx/api
@@ -81,6 +81,8 @@ services:
       backend:
       frontend:
         ipv4_address: 10.1.1.44
+    ports:
+      - "80:80"
     depends_on:
       - api
     restart: unless-stopped

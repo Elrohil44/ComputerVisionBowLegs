@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 VERSION=`cat ./version`
 MODULE=$1
 

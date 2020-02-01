@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 DEPLOYMENT_KEY=./deploy-key
 DEPLOYMENT_SERVER=$EC2_INSTANCE_IP
 

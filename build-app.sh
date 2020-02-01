@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 VERSION=`cat ./version`
 
 API_URL=http://${EC2_INSTANCE_IP}/api
