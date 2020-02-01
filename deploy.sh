@@ -1,10 +1,12 @@
 #!/bin/bash
 
-chmod 400 ./deploy-key
+DEPLOYMENT_KEY=./deploy-key
+DEPLOYMENT_SERVER=$EC2_INSTANCE_IP
 
-ssh travis@${EC2_INSTANCE_IP}
-sudo su - bowlegs
-cd ComputerVisionBowLegs
-bash ./update.sh
+eval "$(ssh-agent -s)"
+chmod 600 "${DEPLOYMENT_KEY}"
+ssh-add "${DEPLOYMENT_KEY}"
 
-echo "Deployment finished"
+ssh-keyscan -H "${DEPLOYMENT_SERVER}" >> ~/.ssh/known_hosts
+ssh -t "travis@${DEPLOYMENT_SERVER}" "sudo su - bowlegs -c \"cd ./ComputerVisionBowLegs && bash update.sh\""
+echo "Deployment finished!"
