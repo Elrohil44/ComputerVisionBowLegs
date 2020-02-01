@@ -7,7 +7,7 @@ jobs:
     - stage: build
       script: bash ./build.sh api
     - script: bash ./build.sh consumer
-    - script: bash ./build.sh app
+    - script: bash ./build-app.sh
     - stage: release
       script: bash ./build.sh api && bash ./release.sh api
     - script: bash ./build.sh consumer && bash ./release.sh consumer
