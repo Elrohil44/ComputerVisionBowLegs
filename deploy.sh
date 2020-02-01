@@ -1,7 +1,10 @@
 #!/bin/bash
 
-VERSION=`cat ./version`
+chmod 400 ./deploy-key
 
-echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-docker push elrohil/computer-vision-bow-legs:latest
-docker push elrohil/computer-vision-bow-legs:${VERSION}
+ssh travis@${EC2_INSTANCE_IP}
+sudo su - bowlegs
+cd ComputerVisionBowLegs
+bash ./update.sh
+
+echo "Deployment finished"

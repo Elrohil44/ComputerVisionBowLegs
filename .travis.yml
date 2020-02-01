@@ -2,13 +2,23 @@ language: python
 python: "3.7"
 services:
   - docker
-install:
-  - bash ./download_model.sh
 jobs:
   include:
+    - stage: build
+      script: bash ./build.sh api
+    - script: bash ./build.sh consumer
+    - script: bash ./build.sh app
+    - stage: release
+      script: bash ./build.sh api && bash ./release.sh api
+    - script: bash ./build.sh consumer && bash ./release.sh consumer
+    - script: bash ./build-app.sh && bash ./release.sh app
     - stage: deploy
-      script: bash ./build.sh && bash ./deploy.sh
+      before_install: openssl aes-256-cbc -K $encrypted_16d7d6725688_key -iv $encrypted_16d7d6725688_iv -in deploy-key.enc -out deploy-key -d
+      script: bash ./deploy.sh
 
 stages:
+  - build
+  - name: release
+    if: type = push
   - name: deploy
     if: type = push AND branch = master

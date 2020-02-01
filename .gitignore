@@ -30,3 +30,6 @@ static/**/*.jpeg
 **/npm-debug.log*
 **/yarn-debug.log*
 **/yarn-error.log*
+.env
+deploy-key
+bow-legs.pem
