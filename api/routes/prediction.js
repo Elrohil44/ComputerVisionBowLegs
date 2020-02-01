@@ -33,8 +33,10 @@ router.post(
       status: 'QUEUED',
     });
     prediction.sourcePath = `${SOURCES_DIR}/${prediction.id}.jpeg`;
+
     await sharp(req.files.image.data)
       .jpeg({ quality: 100, progressive: true })
+      .resize({ width: 256, height: 512, fit: 'inside' })
       .toFile(`${IMAGES_DIR}/${prediction.sourcePath}`);
 
     await prediction.save();

@@ -92,6 +92,8 @@ services:
       - app-build:/app/build
     networks:
       - backend
+    depends_on:
+      - nginx
 networks:
   backend:
     internal: true

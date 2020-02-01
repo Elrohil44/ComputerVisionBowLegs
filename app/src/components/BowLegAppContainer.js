@@ -141,7 +141,7 @@ const BowLegAppContainer = () => {
   const classes = useStyles();
 
   const [lastFetched, setLastFetched] = useState(0);
-  const [defaultImageIndex, setDefaultImageIndex] = useState(null);
+  const [defaultImageIndex, setDefaultImageIndex] = useState(-1);
   const [imageToUpload, setImageToUpload] = useState(null);
   const [uploadedTasks, setUploadedTasks] = useState([]);
 
@@ -211,7 +211,7 @@ const BowLegAppContainer = () => {
               <DefaultOption
                 key={index}
                 isClicked={defaultImageIndex === index}
-                onClick={() => setDefaultImageIndex(defaultImageIndex === index ? null : index)}
+                onClick={() => setDefaultImageIndex(defaultImageIndex === index ? -1 : index)}
                 imgSource={image}
               />
             ))
