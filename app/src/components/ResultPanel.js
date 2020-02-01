@@ -11,7 +11,8 @@ import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 
 
-const STATIC_RESOURCES_ROOT_URL = 'http://10.1.1.44/static';
+const REACT_APP_STATIC_RESOURCES_ROOT_URL = process.env.REACT_APP_STATIC_RESOURCES_ROOT_URL
+  || 'http://10.1.1.44/static';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,7 +83,7 @@ const ResultPanel = ({ predictionTask }) => {
           >
             <img
               alt="Source"
-              src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.sourcePath}`}
+              src={`${REACT_APP_STATIC_RESOURCES_ROOT_URL}/${predictionTask.sourcePath}`}
               className={classes.image}
             />
             <Typography variant="h6">{ 'Source' }</Typography>
@@ -94,7 +95,7 @@ const ResultPanel = ({ predictionTask }) => {
             >
               <img
                 alt="Mask"
-                src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.maskPath}`}
+                src={`${REACT_APP_STATIC_RESOURCES_ROOT_URL}/${predictionTask.maskPath}`}
                 className={classes.image}
               />
               <Typography variant="h6">{ 'Mask' }</Typography>
@@ -107,7 +108,7 @@ const ResultPanel = ({ predictionTask }) => {
             >
               <img
                 alt="Prediction"
-                src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.predictionPath}`}
+                src={`${REACT_APP_STATIC_RESOURCES_ROOT_URL}/${predictionTask.predictionPath}`}
                 className={classes.image}
               />
               <Typography variant="h6">{ 'Prediction' }</Typography>
