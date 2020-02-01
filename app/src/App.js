@@ -1,10 +1,9 @@
 import React from 'react';
 import './App.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import PredictionTable from './components/PredictionsList';
 import BowLegAppContainer from './components/BowLegAppContainer';
 
-//
+
 // function App() {
 //   return (
 //     <div className="App">

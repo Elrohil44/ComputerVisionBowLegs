@@ -81,6 +81,7 @@ const ResultPanel = ({ predictionTask }) => {
             className={classes.option}
           >
             <img
+              alt="Source"
               src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.sourcePath}`}
               className={classes.image}
             />
@@ -92,6 +93,7 @@ const ResultPanel = ({ predictionTask }) => {
               className={classes.option}
             >
               <img
+                alt="Mask"
                 src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.maskPath}`}
                 className={classes.image}
               />
@@ -104,6 +106,7 @@ const ResultPanel = ({ predictionTask }) => {
               className={classes.option}
             >
               <img
+                alt="Prediction"
                 src={`${STATIC_RESOURCES_ROOT_URL}/${predictionTask.predictionPath}`}
                 className={classes.image}
               />

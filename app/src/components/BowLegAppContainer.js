@@ -79,6 +79,7 @@ const DefaultOption = ({ isClicked, onClick, imgSource }) => {
       className={classes.option}
     >
       <img
+        alt="Default option"
         onClick={onClick}
         src={imgSource}
         className={classes.image}
@@ -117,6 +118,7 @@ const UploadButton = ({ onImagePick, imageToUpload }) => {
       </label>
       { imageToUpload ? (
         <img
+          alt="To upload"
           src={URL.createObjectURL(imageToUpload)}
           className={classes.uploadImage}
         />
@@ -165,6 +167,7 @@ const BowLegAppContainer = () => {
     if (/image\/.*/.test(file.type)) {
       setImageToUpload(file);
     } else {
+      /* eslint no-alert:0 */
       alert(`Invalid file type. Expected 'image/*' received '${file.type}'`);
     }
   };
